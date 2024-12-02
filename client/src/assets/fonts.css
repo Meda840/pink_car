@@ -1,0 +1,14 @@
+@font-face {
+    font-family: 'Oceanwide';
+    src: url('./oceanwide-fonts/Oceanwide-Semibold.otf') format('opentype');
+    font-weight: 600;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'MervatVol2';
+    src: url('./MervatVol2-fonts/MervatVol2-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+  }
+  

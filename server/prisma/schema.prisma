@@ -1,0 +1,72 @@
+datasource db {
+  provider = "mysql"
+  
+  url      = "mysql://root:@localhost:3306/pinkcar"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Users {
+  id                Int              @id @default(autoincrement())
+  identity          String           @unique
+  username          String           @unique
+  password          String
+  email             String           @unique
+  phone_number      String           @unique
+  role              Boolean          @default(false)
+  Passenger_Profile Passenger_Profile?
+  Driver_Profile    Driver_Profile?
+}
+
+model Passenger_Profile {
+  id               Int               @id @default(autoincrement())
+  userId           Int               @unique
+  photo            String?
+  biography        String?
+  favorite_drivers Driver_Profile[]  @relation("FavoriteDrivers") // Use join table for favorite drivers
+  favorite_of_drivers Driver_Profile[] @relation("FavoritePassengers") // Reverse relation for favorite passengers
+  users            Users             @relation(fields: [userId], references: [id])
+  trips            Trip[]            // One-to-many relationship with Trip
+}
+
+model Driver_Profile {
+  id                 Int             @id @default(autoincrement())
+  userId             Int             @unique
+  drivingLicence     String          @unique
+  photo              String?
+  biography          String?
+  location           String
+  favorite_cars      Car[]           // One-to-many relationship with Car
+  favorite_passengers Passenger_Profile[] @relation("FavoritePassengers") // Relation to Passenger_Profile
+  favorite_of_passengers Passenger_Profile[] @relation("FavoriteDrivers") // Reverse relation for favorite drivers
+  users              Users           @relation(fields: [userId], references: [id])
+  trips              Trip[]          // One-to-many relationship with Trip
+}
+
+model Car {
+  id                Int             @id @default(autoincrement())
+  mark              String
+  model             String
+  capacity          Int
+  isAutomatic       Boolean
+  year              Int
+  city              String
+  price             Float
+  isAvailable       Boolean
+  drivers           Driver_Profile[] // One-to-many relationship with Driver_Profile
+}
+
+model Trip {
+  id               Int                @id @default(autoincrement())
+  start            String
+  destination      String
+  price            Float?
+  numberPassengers Int?
+  description      String?
+  driverId         Int                // Foreign key for Driver_Profile
+  driver           Driver_Profile     @relation(fields: [driverId], references: [id])
+  passengerId      Int                // Foreign key for Passenger_Profile
+  passenger        Passenger_Profile  @relation(fields: [passengerId], references: [id])
+}

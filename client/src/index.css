@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* styles.css */
+.home-page {
+  padding-top: 5rem; /* Adjust based on Navbar height */
+}
+
+.map-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 7rem; /* Adjust as needed */
+}
